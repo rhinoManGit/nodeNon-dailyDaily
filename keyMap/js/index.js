@@ -2,7 +2,7 @@
 
 window.onload = function () {
 
-	var team =  ["钱慧莉", "范欣", "周祥", "陆尧", "王舵", "郭营", "刘彩娟", "张仓巨"," 徐畅", "陈凯伦",
+	var team =  ["钱慧莉", "范欣", "周祥", "陆尧", "王舵", "郭营", "刘彩娟", "张仓巨","徐畅", "陈凯伦",
 		"朱凯(大)", "刘彬", "肖振监", "白亚如","朱献奎", "徐旭", "邵力", "严晓军", "孙志红",
 		"王永新", "赵娜", "王静雯", "袁露", "陆中泽","朱凯(小)", "杨益晨", "翟倩倩", "孙寒", "上官丹燕",
 		"陈小飞","姜丽华", "陈冲", "张恒一", "朱益玲", "谈克", "张树琴", "何晶晶", "王伟伟", "洪丹丹", "单丽丽", "文江红", "何丹丹"];
@@ -177,9 +177,8 @@ window.onload = function () {
 
 				change(key_els[p].title);
 
-				lucky.length >= getSearch()['total'] && lucky.shift();
-
 				lucky.indexOf(key_els[p].title) < 0 && lucky.push(key_els[p].title);
+				lucky.length > getSearch()['total'] && lucky.shift();
 
 				return;
 			}
