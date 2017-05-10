@@ -115,6 +115,20 @@ window.onload = function () {
 		luckyEl.innerHTML = sLucky;
 	};
 
+	var getSearch = function(){
+
+		var aSearch = document.location.search.replace('?','').split('&'),
+			obj = {};
+
+		aSearch.forEach(function(el){
+
+			var a = el.split('=');
+			obj[a[0]] = a[1]
+		});
+
+		return obj;
+	};
+
 	(function init() {
 		var a3d = document.querySelector('.a3d'),
 			f = document.createDocumentFragment(),
@@ -150,6 +164,8 @@ window.onload = function () {
 		}
 
 		a3d.appendChild(f);
+
+		document.querySelector('.J-total').innerHTML = getSearch()['total'];
 	})();
 
 	addEventListener('keydown', function (e) {
@@ -160,6 +176,9 @@ window.onload = function () {
 				if (!key_els[p].classList.contains('vis')) key_els[p].classList.add('vis');
 
 				change(key_els[p].title);
+
+				lucky.length >= getSearch()['total'] && lucky.shift();
+
 				lucky.indexOf(key_els[p].title) < 0 && lucky.push(key_els[p].title);
 
 				return;
