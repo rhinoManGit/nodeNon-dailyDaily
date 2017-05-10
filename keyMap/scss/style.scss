@@ -1,0 +1,51 @@
+$n: 200;
+
+@function rand($max: 100, $min: 0, $u: .01) {
+	@return ($min + random($max - $min))*$u;
+}
+
+body {
+	overflow: hidden;
+	height: 100vh;
+	perspective: 80em;
+	background: #000;
+	font: 900 1.25em/ 2 vt323, monospace;
+}
+
+div { transform-style: preserve-3d; }
+div, :after { position: absolute; }
+
+.a3d { top: 50%; left: 50%; }
+
+.rot, .key { animation: rotY 0s linear infinite; }
+
+@for $i from 0 to $n {
+	$t: rand(20, 7, 1s);
+	
+	.rot:nth-child(#{$i + 1}) {
+		margin-top: rand(35, -35, 1vh);
+		
+		&, .key {
+			animation-duration: $t;
+			animation-delay: -$t*rand();
+		}
+		
+		.key { margin-left: rand(35, 5, 1vw); }
+	}
+}
+
+.vis:after { animation: hl .5s ease-out 2 alternate; }
+
+.key {
+	animation-direction: reverse;
+
+	&:after {
+		opacity: .25;
+		transform: translate(-50%, -50%);
+		content: attr(data-name);
+	}
+}
+
+@keyframes rotY { to { transform: rotateY(1turn); } }
+
+@keyframes hl { 80%, 100% { opacity: .999; } }
