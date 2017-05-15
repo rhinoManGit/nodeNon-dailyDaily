@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://www.kancloud.cn/thinkphp/python-guide/39553 -->
+<html class="js"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>异步IO - [ Python 3零起点教程 ]</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="shortcut icon" href="https://www.kancloud.cn/favicon.ico">
+    <meta name="description" content="这是小白的Python新手教程，具有如下特点：
+
+中文，免费，零起点，完整示例，基于最新的Python 3版本。">
+    <meta name="keywords" content="Python,新手入门">
+    <link rel="stylesheet" href="./异步IO_files/style.css">
+    <link rel="stylesheet" href="./异步IO_files/kancloud.min.css">
+            <script>(function (H) {
+        H.className = H.className.replace(/\bno-js\b/, 'js')
+    })(document.documentElement)</script>
+    <style></style>
+<link charset="utf-8" rel="stylesheet" href="./异步IO_files/hint.min.css"><script charset="utf-8" async="" src="./异步IO_files/jstree.min.js.下载"></script><link charset="utf-8" rel="stylesheet" href="./异步IO_files/style.min.css"><script charset="utf-8" async="" src="./异步IO_files/jquery.cookie.js.下载"></script><script charset="utf-8" async="" src="./异步IO_files/jquery.textSearch-1.0.js.下载"></script><script charset="utf-8" async="" src="./异步IO_files/jquery.thinkkeyboard.js.下载"></script><script charset="utf-8" async="" src="./异步IO_files/index.js.下载"></script><script charset="utf-8" async="" src="./异步IO_files/highlight.js.下载"></script><script charset="utf-8" async="" src="./异步IO_files/highlight.pack.js.下载"></script><link charset="utf-8" rel="stylesheet" href="./异步IO_files/tomorrow.css" class="codestyle"><link charset="utf-8" rel="alternate stylesheet" href="https://static.kancloud.cn/Static/document/script/plugins/highlight/assets/highlight/styles/androidstudio.css?v=20161121002" class="codestyle" disabled=""><link charset="utf-8" rel="alternate stylesheet" href="https://static.kancloud.cn/Static/document/script/plugins/highlight/assets/highlight/styles/dark.css?v=20161121002" class="codestyle" disabled=""><link charset="utf-8" rel="stylesheet" href="./异步IO_files/jquery.atwho.min.css"><script charset="utf-8" async="" src="./异步IO_files/jquery.caret.min.js.下载"></script><script charset="utf-8" async="" src="./异步IO_files/jquery.atwho.min.js.下载"></script></head>
+<body>
+<!--[if lte IE 8]>
+<div class="m-browsehappy">
+    <div class="browsehappy-inner">
+        <h3 class="title">对不起！<br>您的浏览器版本太低，请升级你的浏览器</h3>
+
+        <p class="suggest">建议使用：</p>
+
+        <p class="brower">
+            <span class="item">
+                <a class="ie image" href="https://www.microsoft.com/en-us/download/internet-explorer.aspx" target="_blank" title="下载Internet Explorer浏览器"></a>
+                <b class="text">ie9+</b>
+            </span>
+            <span class="item">
+                <a class="chrome image" href="http://www.google.cn/intl/zh-CN/chrome/browser/?spm=1.7274553.0.0.benzR1" target="_blank" title="下载Chrome浏览器"></a>
+                <b class="text">chrome</b>
+            </span>
+        </p>
+
+        <p class="from">来自看云官方</p>
+        <b class="browsehappy-arrow"></b>
+    </div>
+</div>
+<script>
+    window.nonsupportIE = true;
+</script>
+<![endif]-->
+<div class="m-manual manual-reader manual-mode-view font-size-1 font-theme-0 manual-active" data-namespace="thinkphp" data-name="python-guide" data-id="2230" data-token="" data-title="Python 3零起点教程" data-desc="这是小白的Python新手教程，具有如下特点：
+
+中文，免费，零起点，完整示例，基于最新的Python 3版本。" data-basepath="http://www.kancloud.cn" data-article-id="39553">
+    <div class="manual-head">
+        <div class="left"><span class="slidebar"><i class="icon-menu"></i></span>
+            <a class="manual-title" href="http://www.kancloud.cn/thinkphp/python-guide" title="返回文档首页">
+                <b class="text">Python 3零起点教程</b>
+            </a>
+        </div>
+        <div style="display: none;">
+            <img src="./异步IO_files/2015-06-22_55881dd5323a0_173x231.jpg">
+        </div>
+    </div>
+    <div class="manual-body">
+        <div class="manual-left">
+            <div class="manual-tab" style="bottom: 35px;">
+                <div class="tab-navg">
+                    <span data-mode="view" class="navg-item active"><i class="icon icon-menu"></i><b class="text">目录</b></span>
+                    <span data-mode="search" class="navg-item"><i class="icon icon-search"></i><b class="text">搜索</b></span>
+                <span data-mode="collect" class="navg-item"><i class="icon icon-heart"></i><b class="text">收藏</b></span></div>
+                <div class="tab-util">
+                    <span class="manual-fullscreen-switch">
+                        <b class="open icon-chevron-right" title="展开"></b>
+                        <b class="close icon-chevron-left" title="关闭"></b>
+                    </span>
+                </div>
+                <div class="tab-wrap">
+                    <div class="tab-item manual-catalog">
+                        <div class="catalog-list read-book-preview jstree jstree-1 jstree-default" role="tree" tabindex="0" aria-activedescendant="39196" aria-busy="false"><ul class="jstree-container-ul jstree-children jstree-wholerow-ul jstree-no-dots" role="group"><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39196_anchor" id="39196" class="jstree-node  jstree-leaf"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39196_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>关于</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39197_anchor" id="39197" class="jstree-node  jstree-leaf"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39197_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>Python简介</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39198_anchor" aria-expanded="false" id="39198" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39198_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>安装Python</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39200_anchor" aria-expanded="false" id="39200" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39200_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>第一个Python程序</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39204_anchor" aria-expanded="false" id="39204" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39204_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>Python基础</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39212_anchor" aria-expanded="false" id="39212" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39212_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>函数</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39217_anchor" aria-expanded="false" id="39217" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39217_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>高级特性</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39223_anchor" aria-expanded="false" id="39223" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39223_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>函数式编程</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39229_anchor" aria-expanded="false" id="39229" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39229_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>模块</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39232_anchor" aria-expanded="false" id="39232" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39232_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>面向对象编程</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39239_anchor" aria-expanded="false" id="39239" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39239_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>面向对象高级编程</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39351_anchor" aria-expanded="false" id="39351" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39351_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>错误、调试和测试</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39356_anchor" aria-expanded="false" id="39356" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39356_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>IO编程</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39401_anchor" aria-expanded="false" id="39401" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39401_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>进程和线程</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39408_anchor" id="39408" class="jstree-node  jstree-leaf"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39408_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>正则表达式</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39409_anchor" aria-expanded="false" id="39409" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39409_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>常用内建模块</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39427_anchor" aria-expanded="false" id="39427" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39427_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>常用第三方模块</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39429_anchor" id="39429" class="jstree-node  jstree-leaf"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39429_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>virtualenv</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39430_anchor" id="39430" class="jstree-node  jstree-leaf"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39430_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>图形界面</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39536_anchor" aria-expanded="false" id="39536" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39536_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>网络编程</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39540_anchor" aria-expanded="false" id="39540" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39540_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>电子邮件</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39543_anchor" aria-expanded="false" id="39543" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39543_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>访问数据库</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39547_anchor" aria-expanded="false" id="39547" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39547_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>Web开发</a></li><li role="treeitem" aria-selected="true" aria-level="1" aria-labelledby="39553_anchor" aria-expanded="false" id="39553" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow jstree-wholerow-clicked">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor jstree-clicked" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39553_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>异步IO</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39557_anchor" aria-expanded="false" id="39557" class="jstree-node  jstree-closed"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39557_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>实战</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39579_anchor" id="39579" class="jstree-node  jstree-leaf"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39579_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>FAQ</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="39580_anchor" id="39580" class="jstree-node  jstree-leaf jstree-last"><div unselectable="on" role="presentation" class="jstree-wholerow">&nbsp;</div><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="https://www.kancloud.cn/thinkphp/python-guide/39553#" tabindex="-1" id="39580_anchor"><i class="jstree-icon jstree-themeicon" role="presentation"></i>期末总结</a></li></ul></div>
+                    </div>
+                    <div class="tab-item manual-search">
+                        <div class="search-inner">
+                            <div class="search-form">
+                                <form class="w-search" onsubmit="return false;" method="post" autocomplete="off">
+                                    <label class="w-text text-m text-full search-enter"><input class="text-input" type="text" name="keyword" placeholder="请输入搜索关键词..."></label>
+                                    <input type="hidden" name="book_id" value="2230">
+                                    <button class="search-btn icon-search" type="submit"></button>
+                                <span class="form-loading">提交中...</span></form>
+                            </div>
+                            <div class="search-result"></div>
+                        </div>
+                    </div>
+                <div class="tab-item manual-collect"><div class="collect-result"></div></div></div>
+            </div>
+            <div class="m-copyright">
+                <p>
+                                        本文档使用
+                    <a href="http://www.kancloud.cn/" target="_blank" onclick="window.open(&#39;http://www.kancloud.cn&#39;)">看云</a> 发布
+                </p>
+            </div>
+        </div>
+        <div class="manual-right">
+            <div class="m-article">
+                <div class="article-head">
+                    <div class="head-tool">
+                        <div class="item font-setting w-drop drop-hover">
+                            <span class="drop-show"><i class="icon icon-font"></i><b class="text">文字</b></span>
+                            <div class="drop-hide drop-hide-left">
+                                <b class="drop-arrow-outer"><i class="drop-arrow-inner"></i></b>
+
+                                <div class="drop-hide-inner">
+                                    <div class="buttons size-list">
+                                        <button type="button" id="reduce-font-size" class="button size-2">A</button>
+                                        <button type="button" id="enlarge-font-size" class="button size-2">A</button>
+                                    </div>
+                                    <div class="buttons theme-list">
+                                        <button type="button" id="color-theme-preview-0" class="button size-3" data-theme="0">默认</button>
+                                        <button type="button" id="color-theme-preview-1" class="button size-3" data-theme="1">护眼</button>
+                                        <button type="button" id="color-theme-preview-2" class="button size-3" data-theme="2">夜间</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="head-util">
+
+                    <div class="item w-drop drop-hover"><span class="drop-show"><i class="icon icon-share"></i><b class="text">分享</b></span><div class="drop-hide drop-hide-right"><b class="drop-arrow-outer" style="margin-left: 88px;"><i class="drop-arrow-inner"></i></b><div class="drop-hide-inner"><div class="m-share-list"><a class="weixin icon-weixin" data-sharing="wechat"></a><a class="qq icon-qq" data-sharing="qq"></a><a class="weibo icon-sina" data-sharing="weibo"></a></div></div></div></div><a class="comment item" title="评论"><i class="icon icon-speech-bubble"></i><b class="text">评论</b></a><a class="collect item" title="收藏"><i class="icon icon-heart"></i><b class="text">收藏</b></a></div>
+                    <h1>异步IO</h1>
+                </div>
+                <div class="article-wrap">
+                    <div class="article-view">
+                        <div class="view-body think-editor-content"><p>在IO编程一节中，我们已经知道，CPU的速度远远快于磁盘、网络等IO。在一个线程中，CPU执行代码的速度极快，然而，一旦遇到IO操作，如读写文件、发送网络数据时，就需要等待IO操作完成，才能继续进行下一步操作。这种情况称为同步IO。</p>
+
+<p>在IO操作的过程中，当前线程被挂起，而其他需要CPU执行的代码就无法被当前线程执行了。</p>
+
+<p>因为一个IO操作就阻塞了当前线程，导致其他代码无法执行，所以我们必须使用多线程或者多进程来并发执行代码，为多个用户服务。每个用户都会分配一个线程，如果遇到IO导致线程被挂起，其他用户的线程不受影响。</p>
+
+<p>多线程和多进程的模型虽然解决了并发问题，但是系统不能无上限地增加线程。由于系统切换线程的开销也很大，所以，一旦线程数量过多，CPU的时间就花在线程切换上了，真正运行代码的时间就少了，结果导致性能严重下降。</p>
+
+<p>由于我们要解决的问题是CPU高速执行能力和IO设备的龟速严重不匹配，多线程和多进程只是解决这一问题的一种方法。</p>
+
+<p>另一种解决IO问题的方法是异步IO。当代码需要执行一个耗时的IO操作时，它只发出IO指令，并不等待IO结果，然后就去执行其他代码了。一段时间后，当IO返回结果时，再通知CPU进行处理。</p>
+
+<p>可以想象如果按普通顺序写出的代码实际上是没法完成异步IO的：</p>
+
+<pre><code class="hljs bash"><span class="hljs-keyword">do</span>_some_code()
+f = open(<span class="hljs-string">'/path/to/file'</span>, <span class="hljs-string">'r'</span>)
+r = f.read() <span class="hljs-comment"># &lt;== 线程停在此处等待IO操作结果</span>
+<span class="hljs-comment"># IO操作完成后线程才能继续执行:</span>
+<span class="hljs-keyword">do</span>_some_code(r)</code></pre>
+
+<p>所以，同步IO模型的代码是无法实现异步IO模型的。</p>
+
+<p>异步IO模型需要一个消息循环，在消息循环中，主线程不断地重复“读取消息-处理消息”这一过程：</p>
+
+<pre><code class="hljs vbscript"><span class="hljs-keyword">loop</span> = get_event_loop()
+<span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+    event = <span class="hljs-keyword">loop</span>.get_event()
+    process_event(event)</code></pre>
+
+<p>消息模型其实早在应用在桌面应用程序中了。一个GUI程序的主线程就负责不停地读取消息并处理消息。所有的键盘、鼠标等消息都被发送到GUI程序的消息队列中，然后由GUI程序的主线程处理。</p>
+
+<p>由于GUI线程处理键盘、鼠标等消息的速度非常快，所以用户感觉不到延迟。某些时候，GUI线程在一个消息处理的过程中遇到问题导致一次消息处理时间过长，此时，用户会感觉到整个GUI程序停止响应了，敲键盘、点鼠标都没有反应。这种情况说明在消息模型中，处理一个消息必须非常迅速，否则，主线程将无法及时处理消息队列中的其他消息，导致程序看上去停止响应。</p>
+
+<p>消息模型是如何解决同步IO必须等待IO操作这一问题的呢？当遇到IO操作时，代码只负责发出IO请求，不等待IO结果，然后直接结束本轮消息处理，进入下一轮消息处理过程。当IO操作完成后，将收到一条“IO完成”的消息，处理该消息时就可以直接获取IO操作结果。</p>
+
+<p>在“发出IO请求”到收到“IO完成”的这段时间里，同步IO模型下，主线程只能挂起，但异步IO模型下，主线程并没有休息，而是在消息循环中继续处理其他消息。这样，在异步IO模型下，一个线程就可以同时处理多个IO请求，并且没有切换线程的操作。对于大多数IO密集型的应用程序，使用异步IO将大大提升系统的多任务处理能力。</p></div>
+                        <div class="view-foot">
+                            <div class="article-jump">
+                                <span class="jump-up">上一篇：<a data-articleid="39552" href="https://www.kancloud.cn/thinkphp/python-guide/39552">使用模板</a></span>
+                                <span class="jump-down">下一篇：<a data-articleid="39554" href="https://www.kancloud.cn/thinkphp/python-guide/39554">协程</a></span>
+                            </div>
+                            <a class="view-backtop active"><i class="icon-arrow-up2"></i></a>
+                        </div>
+                    </div>
+                <div class="article-comment"><div id="articleComment" class="m-comment"><div class="comment-result"><strong class="title">相关评论(<b class="comment-total">0</b>)</strong><div class="comment-post"><form class="form" action="https://www.kancloud.cn/comment/create" method="post"><label class="enter w-textarea textarea-full"><textarea class="textarea-input" name="content" placeholder="文明上网，理性发言" style="height: 72px;"></textarea><input type="hidden" name="doc_id" value="39553"></label><div class="util cf"><div class="left"><span class="comment-code"><b class="e-code icon-embed2" title="插入代码"></b></span></div><div class="right"><span class="form-tip w-fragment fragment-tip">Ctrl + Enter快速发布</span><label class="form-submit w-btn btn-success btn-m"><button class="btn-input" type="submit">发布</button></label></div></div><span class="form-loading">提交中...</span></form></div><div class="comment-list"><div class="comment-empty"><i class="image"></i><b class="text">暂无相关评论</b></div><div class="think-loading loading-ripple-empty"><span class="loading-inner"><i class="loading-image"></i><b class="loading-text">评论加载中</b></span></div></div><div class="comment-more"><span class="more-inner">加载剩余<b class="number">0</b>条评论</span></div></div></div></div></div>
+            <div class="think-loading loading-ripple"><span class="loading-inner"><i class="loading-image"></i><b class="loading-text"></b></span></div></div>
+        </div>
+    <div class="manual-progress"><b class="progress-bar" style="width: 81.5126%;"></b></div></div>
+<div class="manual-mask"></div></div>
+
+<script src="./异步IO_files/sea.js.下载"></script>
+<script>
+    seajs.config({
+        base   : "//static.kancloud.cn/Static/",
+        paths  : {
+            'home'     : 'home/script',
+            'common'   : 'common/script',
+            'document' : 'document/script',
+            'component': 'component'
+        },
+        preload : [
+            'jquery'
+        ],
+        alias: {
+            'jquery':'component/jquery',
+            'config': 'common/module/config'
+        },
+        map    : [
+            [/^(.*\.(?:css|js))(.*)$/i, '$1?v=20161121002']
+        ],
+        debug  : true
+    });
+</script>
+<script src="./异步IO_files/app.min.js.下载"></script>
+    <script src="./异步IO_files/kancloud.min.js.下载"></script><script>
+    seajs.use('config', function (config) {
+        //设置项目配置
+        config.set({
+            "ROOT"  : "", //当前网站地址
+            "APP"   : "", //当前项目地址
+            "STATIC": "//static.kancloud.cn/Static", //静态资源文件地址
+            "PUBLIC": "//static.kancloud.cn/Static", //home目录地址
+            "GIT_HOST" : "https://git.kancloud.cn",
+        });
+        seajs.use('home/globle', function (globle) {
+            //启动页面脚本
+            if(globle!==false) {
+                seajs.use('document/kancloud', function (kancloud) {
+                    kancloud.start({"plugins":["highlight"],"comment":true,"collect":true,"cover":"http:\/\/box.kancloud.cn\/2015-06-22_55881dd5323a0_173x231.jpg?imageMogr2\/thumbnail\/231x273!\/interlace\/1\/quality\/100","sharing":true,"login":true});
+                });
+            }
+        });
+    });
+</script>
+
+
+<div class="atwho-container"><div id="atwho-ground-f5781c921494816054986"><div class="atwho-view" id="at-view-64"><ul class="atwho-view-ul"></ul></div></div></div><div id="cli_dialog_div"></div></body></html>

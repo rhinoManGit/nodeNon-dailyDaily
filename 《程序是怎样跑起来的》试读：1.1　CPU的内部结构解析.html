@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)https://book.douban.com/reading/34815959/ -->
+<html lang="zh-cmn-Hans" class="ua-windows ua-webkit book-new-nav"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>
+《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析
+</title>
+  
+<link type="text/css" rel="stylesheet" href="./《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析_files/dialog.css"><script type="text/javascript" src="./《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析_files/template.js.下载" async="true"></script><script type="text/javascript" src="./《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析_files/suggest.js.下载" async="true"></script><script type="text/javascript" defer="" async="" src="./《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析_files/piwik.js.下载"></script><script type="text/javascript" src="./《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析_files/dialog.js.下载" async="true"></script><script>!function(e){var o=function(o,n,t){var c,i,r=new Date;n=n||30,t=t||"/",r.setTime(r.getTime()+24*n*60*60*1e3),c="; expires="+r.toGMTString();for(i in o)e.cookie=i+"="+o[i]+c+"; path="+t},n=function(o){var n,t,c,i=o+"=",r=e.cookie.split(";");for(t=0,c=r.length;t<c;t++)if(n=r[t].replace(/^\s+|\s+$/g,""),0==n.indexOf(i))return n.substring(i.length,n.length).replace(/\"/g,"");return null},t=e.write,c={"douban.com":1,"douban.fm":1,"google.com":1,"google.cn":1,"googleapis.com":1,"gmaptiles.co.kr":1,"gstatic.com":1,"gstatic.cn":1,"google-analytics.com":1,"googleadservices.com":1},i=function(e,o){var n=new Image;n.onload=function(){},n.src="https://www.douban.com/j/except_report?kind=ra022&reason="+encodeURIComponent(e)+"&environment="+encodeURIComponent(o)},r=function(o){try{t.call(e,o)}catch(e){t(o)}},a=/<script.*?src\=["']?([^"'\s>]+)/gi,g=/http:\/\/(.+?)\.([^\/]+).+/i;e.writeln=e.write=function(e){var t,l=a.exec(e);return l&&(t=g.exec(l[1]))?c[t[2]]?void r(e):void("tqs"!==n("hj")&&(i(l[1],location.href),o({hj:"tqs"},1),setTimeout(function(){location.replace(location.href)},50))):void r(e)}}(document);
+</script>
+
+  
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="Sun, 6 Mar 2005 01:00:00 GMT">
+  
+  <script>var _head_start = new Date();</script>
+  
+  <link href="./《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析_files/master.css" rel="stylesheet" type="text/css">
+
+  <style type="text/css">
+.book-content { font:12px/1.6 arial,helvetica,sans-serif }
+.book-content p { font-size: 14px; text-indent: 0; position: relative; margin: 0; padding: 0 }
+.prev , .next , a.prev , a.next { padding: 0; margin: 0 }
+.prev , .next { background: none; color: #888 }
+</style>
+  <script src="./《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析_files/jquery.js.下载"></script>
+  <script src="./《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析_files/master.js.下载"></script>
+  
+
+  
+<link rel="stylesheet" type="text/css" href="./《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析_files/issue.css">
+<script type="text/javascript" src="./《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析_files/do.js.下载" data-cfg-autoload="false"></script>
+
+  <script> 
+Do.add('dialog-css', {path: 'https://img3.doubanio.com/f/shire/8377b9498330a2e6f056d863987cc7a37eb4d486/css/ui/dialog.css', type: 'css'});
+Do.add('dialog', {path: 'https://img3.doubanio.com/f/shire/3d185ca912c999ee7f464749201139ebf8eb6972/js/ui/dialog.js', type: 'js', requires: ['dialog-css']});
+ </script>
+  <link rel="stylesheet" href="./《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析_files/12426b91c8a39d42.css">
+
+  <link rel="shortcut icon" href="https://img3.doubanio.com/favicon.ico" type="image/x-icon">
+<script src="./《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析_files/ga.js.下载" async="true"></script></head>
+<body>
+  
+    <script>var _body_start = new Date();</script>
+    
+  
+  
+  
+
+
+
+
+
+
+<div id="db-global-nav" class="global-nav">
+  <div class="bd">
+    
+
+
+
+
+
+<div class="top-nav-info">
+      
+      <a href="https://www.douban.com/accounts/login?source=book" class="nav-login" rel="nofollow">登录</a>
+      <a href="https://www.douban.com/accounts/register?source=book" class="nav-register" rel="nofollow">注册</a>
+</div>
+
+
+    <div class="top-nav-doubanapp">
+        
+        <a href="https://www.douban.com/doubanapp/app?channel=top-nav" class="lnk-doubanapp">下载豆瓣客户端</a>
+        <div id="top-nav-appintro" class="more-items">
+            <p class="appintro-title">豆瓣</p>
+            <p class="slogan">我们的精神角落</p>
+            <p class="qrcode">
+                扫码直接下载
+            </p>
+            <div class="download">
+                <a href="https://www.douban.com/doubanapp/redirect?channel=top-nav&amp;direct_dl=1&amp;download=iOS">iPhone</a>
+                <span>·</span>
+                <a href="https://www.douban.com/doubanapp/redirect?channel=top-nav&amp;direct_dl=1&amp;download=Android" class="download-android">Android</a>
+            </div>
+        </div>
+        <div id="doubanapp-tip" style="display: block;">
+            <a href="https://www.douban.com/doubanapp/app?channel=qipao" class="tip-link">豆瓣 4.0 全新发布</a>
+            <a href="javascript: void 0;" class="tip-close">×</a>
+        </div>
+    </div>
+
+    <div class="global-nav-items">
+      <ul>
+          
+            
+            <li class="">
+            <a href="https://www.douban.com/" target="_blank" data-moreurl-dict="{&quot;from&quot;:&quot;top-nav-click-main&quot;,&quot;uid&quot;:&quot;0&quot;}">
+              豆瓣
+            </a>
+            </li>
+          
+            
+            <li class="on">
+            <a href="https://book.douban.com/" data-moreurl-dict="{&quot;from&quot;:&quot;top-nav-click-book&quot;,&quot;uid&quot;:&quot;0&quot;}">
+              读书
+            </a>
+            </li>
+          
+            
+            <li class="">
+            <a href="https://movie.douban.com/" target="_blank" data-moreurl-dict="{&quot;from&quot;:&quot;top-nav-click-movie&quot;,&quot;uid&quot;:&quot;0&quot;}">
+              电影
+            </a>
+            </li>
+          
+            
+            <li class="">
+            <a href="https://music.douban.com/" target="_blank" data-moreurl-dict="{&quot;from&quot;:&quot;top-nav-click-music&quot;,&quot;uid&quot;:&quot;0&quot;}">
+              音乐
+            </a>
+            </li>
+          
+            
+            <li class="">
+            <a href="https://www.douban.com/location/" target="_blank" data-moreurl-dict="{&quot;from&quot;:&quot;top-nav-click-location&quot;,&quot;uid&quot;:&quot;0&quot;}">
+              同城
+            </a>
+            </li>
+          
+            
+            <li class="">
+            <a href="https://www.douban.com/group/" target="_blank" data-moreurl-dict="{&quot;from&quot;:&quot;top-nav-click-group&quot;,&quot;uid&quot;:&quot;0&quot;}">
+              小组
+            </a>
+            </li>
+          
+            
+            <li class="">
+            <a href="https://read.douban.com/?dcs=top-nav&amp;dcm=douban" target="_blank" data-moreurl-dict="{&quot;from&quot;:&quot;top-nav-click-read&quot;,&quot;uid&quot;:&quot;0&quot;}">
+              阅读
+            </a>
+            </li>
+          
+            
+            <li class="">
+            <a href="https://douban.fm/?from_=shire_top_nav" target="_blank" data-moreurl-dict="{&quot;from&quot;:&quot;top-nav-click-fm&quot;,&quot;uid&quot;:&quot;0&quot;}">
+              FM
+            </a>
+            </li>
+          
+            
+            <li class="">
+            <a href="https://dongxi.douban.com/?dcs=top-nav&amp;dcm=douban" target="_blank" data-moreurl-dict="{&quot;from&quot;:&quot;top-nav-click-commodity&quot;,&quot;uid&quot;:&quot;0&quot;}">
+              东西
+            </a>
+            </li>
+          
+            
+            <li class="">
+            <a href="https://market.douban.com/?utm_campaign=douban_top_nav&amp;utm_source=douban&amp;utm_medium=pc_web" target="_blank" data-moreurl-dict="{&quot;from&quot;:&quot;top-nav-click-market&quot;,&quot;uid&quot;:&quot;0&quot;}">
+              市集
+            </a>
+            </li>
+          
+            <li>
+              <a href="https://book.douban.com/reading/34815959/#more" class="bn-more"><span>更多</span></a>
+              <div class="more-items">
+                <table cellpadding="0" cellspacing="0">
+                    
+                    <tbody><tr><td><a href="https://moment.douban.com/" target="_blank" data-moreurl-dict="{&quot;from&quot;:&quot;top-nav-click-moment&quot;,&quot;uid&quot;:&quot;0&quot;}">一刻</a></td></tr>
+                    
+                    <tr><td><a href="https://ypy.douban.com/" target="_blank" data-moreurl-dict="{&quot;from&quot;:&quot;top-nav-click-ypy&quot;,&quot;uid&quot;:&quot;0&quot;}">豆瓣摄影</a></td></tr>
+                </tbody></table>
+              </div>
+            </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+  
+  
+
+
+
+
+
+
+
+
+<div id="db-nav-book" class="nav">
+  <div class="nav-wrap">
+    <div class="nav-primary">
+      <div class="nav-logo">
+        <a href="https://book.douban.com/">豆瓣读书</a>
+      </div>
+      <div class="nav-search">
+        <form action="https://book.douban.com/subject_search" method="get">
+          <fieldset>
+            <legend>搜索：</legend>
+            <label for="inp-query" style="display: none;">书名、作者、ISBN</label>
+            <div class="inp">
+              <input id="inp-query" name="search_text" size="22" maxlength="60" value="" placeholder="书名、作者、ISBN" autocomplete="off" dir="ltr">
+            </div>
+            <div class="inp-btn">
+              <input type="submit" value="搜索">
+            </div>
+            <input type="hidden" name="cat" value="1001">
+          </fieldset>
+        </form>
+        <style>
+            .nav-search,
+            .nav .nav-primary {
+                overflow: visible !important;
+            }
+
+            .nav-search {
+                margin-left: 145px;
+            }
+        </style>
+      </div>
+    </div>
+  </div>
+  <div class="nav-secondary">
+    
+    <ul class="nav-items">
+      <li class="nav-item-first"><a href="https://book.douban.com/tag/">分类浏览</a></li>
+      
+      <li class="">
+        <a href="https://book.douban.com/cart">购书单</a>
+      </li>
+      <li>
+        <a href="https://read.douban.com/ebooks/?dcs=book-nav&amp;dcm=douban" target="_blank">电子图书</a>
+      </li>
+      <li>
+        <a href="https://market.douban.com/book?platform=web&amp;channel=book_nav">纸书</a>
+      </li>
+      <li>
+        <a href="https://book.douban.com/annual2016/?source=navigation" target="_blank">2016年度榜单</a>
+      </li>
+      <li>
+        <a href="https://book.douban.com/standbyme/2016?source=navigation" target="_blank">2016读书报告</a>
+       </li><li class="book-cart ">
+        <a href="https://market.douban.com/cart/?source=book" target="_blank">购物车</a>
+      </li> 
+    </ul>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+  
+  <script type="text/template" id="suggest-item">
+    <li class="item"><a href="#">{{= item}}</a></li>
+  </script>
+  
+  
+
+
+
+    <div id="wrapper">
+        
+        
+  <div id="content">
+    
+    <h1>《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析</h1>
+
+    <div class="grid-16-8 clearfix">
+      
+      <div class="article">
+
+<div class="book-info">
+    <div class="book-content">
+        <div class="note" unselectable="on" onselectstart="return false;">热身问题
+阅读正文前，让我们先回答下面的问题来热热身吧。
+
+问题
+1. 程序是什么？ 
+2. 程序是由什么组成的？ 
+3. 什么是机器_语言？ 
+4. 正在运行的程序存储在什么位置？ 
+5. 什么是内存地址？
+6. 计算机的构成元件中，负责程序的解释和运行的是哪个？
+
+怎么样？是不是发现有一些问题无法简单地解释清楚呢？下面是笔者的答案和解析，供大家参考。
+
+答案
+1. 指示计算机每一步动作的一组指令
+2. 指令和数据
+3. CPU可以直接识别并使用的语言
+4. 内存
+5. 内存中，用来表示命令和数据存储位置的数值
+6. CPU
+
+解析
+1. 一般所说的程序，譬如运动会、音乐会的程序等，指的是“行事的先后次序”。计算机程序也是一样的道理。
+2. 程序是指令和数据的组合体。例如，C语言“printf ("你好");”这个简单的程序中，printf是指令，"你好"是数据。
+3. CPU能够直接识别和执行的只有机器语言。使用C、Java等语言编写的程序，最后都会转化成机器语言。
+4. 硬盘和磁盘等媒介上保存的程序被复制到内存后才能运行。
+5. 内存中保存命令和数据的场所，通过地址来标记和指定。地址由整数值表示。 
+6. 计算机的构成元件中，根据程序的指令来进行数据运算，并控制整个计算机的设备称作CPU。大家熟知的奔腾（Pentium）就是CPU的一种。
+
+本章重点
+首先让我们来看一下解释和运行程序的CPU。CPU是英文Central Processing Unit（中央处理器）的缩写，相当于计算机的大脑，它的内部由数百万至数亿个晶体管构成，这些都是大家所熟知的。不过，对CPU的了解如果只限于此的话，对编程是没有任何帮助的。程序员还需要理解CPU是如何运行的，特别是要弄清楚负责保存指令和数据的寄存器的机制。了解了寄存器，也就自然而然地理解了程序的运行机制。可能有很多读者会认为CPU的运行机制比较难，其实它非常简单。所以，不妨放松心情，跟随笔者一起往下阅读吧。
+
+1.1　CPU的内部结构解析
+图1-1展示了程序运行的一般流程。可以说了解程序的运行流程是掌握程序运行机制的基础和前提。详细内容会在接下来的章节中逐渐展开，这里主要是希望大家先有个大致印象。在这一流程中， CPU ①所负责的就是解释和运行最终转换成机器语言的程序内容。
+CPU和内存是由许多晶体管组成的电子部件，通常称为IC（Integrated Circuit，集成电路）。从功能方面来看，如图1-2所示，CPU的内部由寄存器、控制器、运算器和时钟四个部分构成，各部分之间由电流信号相互连通。 寄存器_可用来暂存指令、数据等处理对象，可以将其看作是内存的一种。根据种类的不同，一个CPU内部会有20～100个寄存器。 控制器_负责把内存上的指令、数据等读入寄存器，并根据指令的执行结果来控制整个计算机。 运算器_负责运算从内存读入寄存器的数据。 时钟_负责发出CPU开始计时的时钟信号②。不过，也有些计算机的时钟位于CPU的外部。
+①  CPU是用来表示计算机内部元件功能的术语。另一方面，奔腾等半导体芯片，通常称为微处理器。不过，由于大部分计算机通常只有一个微处理器来承担CPU的功能，所以本章不对此进行区分，统一使用CPU这一称呼。CPU由具有ON/OFF开关功能的晶体管构成。另外，有的CPU在一个集成电路中集成了两个CPU芯片，我们称之为双核（dual core）CPU。
+② 时钟信号英文叫作clock puzzle。Pentium 2 GHz表示时钟信号的频率为2 GHz（1 GHz = 10亿次/秒）。也就是说，时钟信号的频率越高，CPU的运行速度越快。
+接下来简单地解释一下内存。通常所说的内存指的是计算机的主存储器（main memory）①，简称主存。主存通过控制芯片等与CPU相连，主要负责存储指令和数据。主存由可读写的元素构成，每个字节（1字节 = 8位 ）都带有一个地址编号。CPU可以通过该地址读取主存中的指令和数据，当然也可以写入数据。但有一点需要注意，主存中存储的指令和数据会随着计算机的关机而自动清除。
+① 主存位于计算机机体内部，是负责存储程序、数据等的装置。主存通常使用DRAM（Dynamic Random Access Memory，动态随机存取存储器）芯片。DRAM可以对任何地址进行数据的读写操作，但需要保持稳定的电源供给并时常刷新（确保是最新数据），关机后内容将自动清除。关于内存IC，第4章有详细介绍。
+了解了CPU的构造后，大家对程序的运行机制的理解是不是也加深了一些？程序启动后，根据时钟信号，控制器会从内存中读取指令和数据。通过对这些指令加以解释和运行，运算器就会对数据进行运算，控制器根据该运算结果来控制计算机。看到“控制”一词时，大家可能会将事情想象得过于复杂，其实所谓的控制就是指数据运算以外的处理（主要是数据输入输出的时机控制）。比如内存和磁盘等媒介的输入输出、键盘和鼠标的输入、显示器和打印机的输出等，这些都是控制的内容。
+
+</div>
+    </div>
+</div>
+<div class="rel-info">
+    
+
+
+
+
+
+
+
+<div class="rec-sec">
+
+    <span class="rec">
+
+<a href="https://www.douban.com/accounts/register?reason=collect" class="j a_show_login lnk-sharing lnk-douban-sharing">推荐</a>
+</span>
+</div>
+
+</div>
+<div class="paginator">
+<span class="prev">
+    <a href="https://book.douban.com/reading/34815943/">前　言</a>
+</span>
+
+<span class="break"><a href="https://book.douban.com/subject/26365491/reading/">回试读目录</a></span>
+
+<span class="next">
+    <a href="https://book.douban.com/reading/34815973/">1.2　CPU是寄存器的集合体</a>
+</span>
+</div>
+</div>
+      <div class="aside">
+        
+    <p class="pl2">&gt;<a href="https://book.douban.com/subject/26365491/">程序是怎样跑起来的</a></p>
+    <div class="indent">
+        
+
+
+
+
+
+
+
+
+
+
+
+<div>
+    <a href="https://book.douban.com/subject/26365491/"><img class="fil" alt="程序是怎样跑起来的" title="程序是怎样跑起来的" src="./《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析_files/s28047380.jpg" rel="v:image"></a>
+<br clear="all">
+
+    <span class="pl">作者:</span> [日] 矢泽久雄<br>
+
+    
+            
+    
+            
+    <span class="pl">isbn:</span> 7115385130<br>
+
+    
+            
+    <span class="pl">书名:</span> 程序是怎样跑起来的<br>
+
+    
+            
+    <span class="pl">页数:</span> 272<br>
+
+    
+            
+    
+    <span class="pl">译者:</span> <a href="https://book.douban.com/search/%E6%9D%8E%E9%80%A2%E4%BF%8A">李逢俊</a><br>
+
+    
+            
+    
+    
+            
+    <span class="pl">定价:</span> 39.00元<br>
+
+    
+            
+    <span class="pl">出版社:</span> 人民邮电出版社<br>
+
+    
+            
+    
+            
+    <span class="pl">装帧:</span> 平装<br>
+
+    
+            
+    <span class="pl">出版年:</span> 2015-4<br>
+
+    
+            
+</div>
+
+    </div>
+
+      </div>
+      <div class="extra">
+        
+      </div>
+    </div>
+  </div>
+
+        
+  <div id="footer">
+    
+<span id="icp" class="fleft gray-link">
+    © 2005－2017 douban.com, all rights reserved 北京豆网科技有限公司
+</span>
+
+<a href="https://www.douban.com/hnypt/variformcyst.py" style="display: none;"></a>
+
+<span class="fright">
+    <a href="https://www.douban.com/about">关于豆瓣</a>
+    · <a href="https://www.douban.com/jobs">在豆瓣工作</a>
+    · <a href="https://www.douban.com/about?topic=contactus">联系我们</a>
+    · <a href="https://www.douban.com/about?policy=disclaimer">免责声明</a>
+    
+    · <a href="https://help.douban.com/?app=book" target="_blank">帮助中心</a>
+    · <a href="https://book.douban.com/library_invitation">图书馆合作</a>
+    · <a href="https://www.douban.com/doubanapp/">移动应用</a>
+    · <a href="https://www.douban.com/partner/">豆瓣广告</a>
+</span>
+
+  </div>
+
+    </div>
+    <script type="text/javascript" src="./《程序是怎样跑起来的》试读：1.1　CPU的内部结构解析_files/41edbb3f480f5f6e.js.下载"></script>
+    <!-- mako -->
+    
+<script type="text/javascript">
+Do('pagination', 'dialog', function(){
+    $(".delete-page-btn").click(function(e){
+        e.preventDefault();
+        chp_id = this.id.split("_")[1];
+        $.get("/j/reading/popwin_delete_page", {"chp_id": chp_id}, function(data){
+            dui.Dialog({
+                title: '请告诉我们删除的理由',
+                content: data,
+                width: 400,
+                cache: false,
+                buttons: [
+                    {
+                        text: '提交',
+                        method: function(o){
+                            o.submit();
+                            o.close();
+                            window.location.reload();
+                        }
+                    },
+                    {
+                        text: '取消',
+                        method: function(o){
+                            o.close();
+                        }
+                    }
+                ]
+            }).open();
+        }, "html");
+        return false;
+    });
+});
+</script>
+
+    
+  
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var p=(('https:' == document.location.protocol) ? 'https' : 'http'), u=p+'://fundin.douban.com/';
+    _paq.push(['setTrackerUrl', u+'piwik']);
+    _paq.push(['setSiteId', '100001']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; 
+    g.type='text/javascript';
+    g.defer=true; 
+    g.async=true; 
+    g.src=p+'://s.doubanio.com/dae/fundin/piwik.js';
+    s.parentNode.insertBefore(g,s);
+  })();
+</script>
+
+<script type="text/javascript">
+var setMethodWithNs = function(namespace) {
+  var ns = namespace ? namespace + '.' : ''
+    , fn = function(string) {
+        if(!ns) {return string}
+        return ns + string
+      }
+  return fn
+}
+
+var gaWithNamespace = function(fn, namespace) {
+  var method = setMethodWithNs(namespace)
+  fn.call(this, method)
+}
+
+var _gaq = _gaq || []
+  , accounts = [
+      { id: 'UA-7019765-1', namespace: 'douban' }
+    , { id: 'UA-7019765-16', namespace: '' }
+    ]
+  , gaInit = function(account) {
+      gaWithNamespace(function(method) {
+        gaInitFn.call(this, method, account)
+      }, account.namespace)
+    }
+  , gaInitFn = function(method, account) {
+      _gaq.push([method('_setAccount'), account.id])
+
+      
+  _gaq.push([method('_addOrganic'), 'google', 'q'])
+  _gaq.push([method('_addOrganic'), 'baidu', 'wd'])
+  _gaq.push([method('_addOrganic'), 'soso', 'w'])
+  _gaq.push([method('_addOrganic'), 'youdao', 'q'])
+  _gaq.push([method('_addOrganic'), 'so.360.cn', 'q'])
+  _gaq.push([method('_addOrganic'), 'sogou', 'query'])
+  if (account.namespace) {
+    _gaq.push([method('_addIgnoredOrganic'), '豆瓣'])
+    _gaq.push([method('_addIgnoredOrganic'), 'douban'])
+    _gaq.push([method('_addIgnoredOrganic'), '豆瓣网'])
+    _gaq.push([method('_addIgnoredOrganic'), 'www.douban.com'])
+  }
+
+      if (account.namespace === 'douban') {
+        _gaq.push([method('_setDomainName'), '.douban.com'])
+      }
+
+        _gaq.push([method('_setCustomVar'), 1, 'responsive_view_mode', 'desktop', 3])
+
+        _gaq.push([method('_setCustomVar'), 2, 'login_status', '0', 2]);
+
+      _gaq.push([method('_trackPageview')])
+    }
+
+for(var i = 0, l = accounts.length; i < l; i++) {
+  var account = accounts[i]
+  gaInit(account)
+}
+
+
+;(function() {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+})()
+</script>
+
+
+
+
+
+
+
+
+    <!-- sindar7d-docker-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="cli_dialog_div"></div></body></html>

@@ -1,0 +1,38 @@
+
+Do(function(){
+  var cookieCfg={key:"ap",cookie:"1"},$doubanTip=$("#doubanapp-tip"),data={};function hideDoubanTip(){if(!$doubanTip.length){return}$doubanTip.hide();data[cookieCfg.key]=cookieCfg.cookie;set_cookie(data)}$doubanTip.delegate("a","click",hideDoubanTip);if(!get_cookie(cookieCfg.key)){$doubanTip.show()}var popup;var nav=$("#db-global-nav");var more=nav.find(".bn-more");function handleShowMoreActive(c){var a=$(c.currentTarget);var b=a.parent();hideDoubanTip();if(popup){popup.parent().removeClass("more-active");if($.contains(b[0],popup[0])){popup=null;return}}b.addClass("more-active");popup=b.find(".more-items");popup.trigger("moreitem:show")}nav.delegate(".bn-more, .top-nav-reminder .lnk-remind","click",function(a){a.preventDefault();handleShowMoreActive(a);return}).delegate(".lnk-doubanapp","mouseenter",function(b){var a=$(this);if(!a.parent().hasClass("more-active")){handleShowMoreActive(b)}}).delegate(".top-nav-doubanapp","mouseleave",function(){var b=$(this);var a=b.find(".lnk-doubanapp");if(popup){b.removeClass("more-active");if($.contains(b[0],popup[0])){popup=null}}});$(document).click(function(a){if($(a.target).closest(".more-items").length||$(a.target).closest(".more-active").length){return}if(popup){popup.parent().removeClass("more-active");popup=null}});
+});
+
+  Do(function(){
+    var nav = $('#db-nav-book');
+    var inp=$("#inp-query"),label=inp.closest(".nav-search").find("label");"placeholder"in inp[0]?(label.hide(),inp.attr("placeholder",label.text())):(""!==inp.val()&&label.hide(),inp.parent().click(function(){inp.focus(),label.hide()}).end().focusin(function(){label.hide()}).focusout(function(){""===$.trim(this.value)?label.show():label.hide()}).keydown(function(){label.hide()})),inp.parents("form").submit(function(){if(!$.trim(inp.val()).length)return!1}),nav.find(".lnk-more, .lnk-account").click(function(n){n.preventDefault();var i,e=$(this),t=e.hasClass("lnk-more")?$("#db-productions"):$("#db-usr-setting");t.data("init")||(i=e.offset(),t.css({"margin-left":i.left-$(window).width()/2-t.width()+e.width()+parseInt(e.css("padding-right"),10)+"px",left:"50%",top:i.top+e.height()+"px"}),t.data("init",1),t.hide(),$("body").click(function(n){var i=$(n.target);i.hasClass("lnk-more")||i.hasClass("lnk-account")||i.closest("#db-usr-setting").length||i.closest("#db-productions").length||t.hide()})),"none"===t.css("display")?($(".dropdown").hide(),t.show()):$(".dropdown").hide()});
+
+    $(function(){function t(t){var a=$.extend({ck:r},t.data);"POST"==t.type&&(a=JSON.stringify(a)),$.ajax({type:t.type||"GET",url:t.url,data:a,dataType:t.dataType||"json",xhrFields:{withCredentials:!0},crossDomain:!0,contentType:"application/json",success:function(a){0!==a.r?t.error?t.error(a.error,a.data,a):a.error&&console.info(a.error):t.success&&t.success(a)},error:function(t,a,n){console.info("服务器开小差，请稍后再试")}})}function a(t){$("li.book-cart a",".nav-secondary").text("购物车("+t+")")}var n="https://market.douban.com/api/v2/cart/",r=get_cookie("ck");r&&t({url:n+"quantity?source=book",success:function(t){a(t.data.quantity||0)},error:function(t){console.warn(t)}}),$("a.btn-cart","div.market-banner").on("click",function(r){r.preventDefault();var e=$(this);e.hasClass("disabled")||(e.addClass("disabled").text("已加入购物车"),t({url:n+"items",type:"POST",data:{sku_id:String(e.attr("data-id")),quantity:1},success:function(t){a(t.data.total_quantity||0)}}))})});
+  });
+
+    var staticUrl = {
+      'widget/suggest': 'https://img3.doubanio.com/f/book/fb39a7db3f0efd385d84ed1af0b03afafc38a4ef/js/book/widget/suggest.js'
+    , 'mod/template' :'https://img3.doubanio.com/f/book/1081346cb62d4c087781196351608229705e8115/js/book/mod/template.js'
+    }
+
+    var setupSearchSuggest = function() {
+      var navSearchForm=$(".nav-srh form[name=ssform]");if(!navSearchForm.length)var navSearchForm=$(".nav-search form");var navSearch=navSearchForm.find("input[name=search_text]");navSearch.searchSuggest({preventSearch:function(r){return""===r||"书名、作者、ISBN"===r},parse:function(r){if(r.r&&1===r.r)return null;var e=r.suggests;return e.length?e.length>8?e.slice(0,8):e:null},tmplEngine:_.template,tmplPanel:'<ul id="nav-srh-suggest"></ul>',tmplItem:$("#suggest-item").html(),url:"/j/suggest_text",form:navSearchForm,queryArg:"q"});
+    }
+
+    if(!Do.ready){
+      !function(n){var t=function(t,e){return e=n.extend(e||{},{dataType:"script",cache:!0,url:t}),n.ajax(e)},e=function(n,c){t(n.shift()).done(function(){n.length?e(n,c):c()})};n.getScripts=e}(jQuery);
+
+      $.getScripts([staticUrl['widget/suggest']
+        , staticUrl['mod/template']], setupSearchSuggest)
+    }else{
+      Do.add('widget/suggest', {
+        path: staticUrl['widget/suggest']
+      , type: 'js'
+      })
+      Do.add('mod/template', {
+        path: staticUrl['mod/template']
+      , type: 'js'
+      })
+      Do.ready('widget/suggest', 'mod/template', setupSearchSuggest)
+    }
+  
