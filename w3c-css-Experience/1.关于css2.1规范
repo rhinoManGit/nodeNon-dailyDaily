@@ -1,0 +1,44 @@
+1,约定：
+css属于和伪类名用单引号
+css值用单引号
+文档语言属性名用小写字母并用双引号
+？文档语言类是指那些
+2，css属性的定义
+‘property-name’
+    Value: 合法值&语法
+    Inital:初始值
+    Applies to: 该属性的适用于的元素
+    Inherited: 该属性继承与否
+    Percentages：百分比值如何应用
+    Media: 该属性使用的媒体组
+    Computed value: 计算值的方式
+
+分量的值可能被这样安排到属性值中：
+
+几个并列的单词，表示它们必须以给定的顺序全部出现
+竖线(|)分隔两个或者更多可选值：其中必须出现且仅出现一个
+双竖线(||)分隔的两个或者更多项：必须出现一个或者多个，顺序随意
+双和号(&&)分隔的两个或更多部分，必须全部出现，顺序随意
+方括号([ ])用来分组
+
+任何元素都具有所有属性，但是一些属性在某些元素上面没有效果，例如，‘clear’只对块级元素起作用。
+百分比作为属性值，如果出现“N/A”，表示该属性不支持百分比。
+
+简写属性
+一些属性是简写属性，表示他们允许编写者用一个属性指定几个属性值
+例如，’font‘属性是一个用来一次性设置’font-style‘,'font-variant','font-weight',，'font-size'，'line-height'和 'font-family'的简写属性
+当简写形式中的值被省略时，每个“缺失”的属性会被赋值为其初始值
+
+本例中的多条样式规则：
+
+h1 {
+  font-weight: bold;
+  font-size: 12pt;
+  line-height: 14pt;
+  font-family: Helvetica;
+  font-variant: normal;
+  font-style: normal;
+}
+可以用一条简写属性改写：
+
+h1 { font: bold 12pt/14pt Helvetica }
