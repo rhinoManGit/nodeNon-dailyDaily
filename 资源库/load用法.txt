@@ -1,0 +1,66 @@
+调用load方法的完整格式是：load( url, [data], [callback] ),其中
+url：是指要导入文件的地址。
+data：可选参数；因为Load不仅仅可以导入静态的html文件，还可以导入动态脚本，例如PHP文件，所以要导入的是动态文件时，我们可以把要传递的参数放在这里。
+callback：可选参数；是指调用load方法并得到服务器响应后，再执行的另外一个函数。
+一：如何使用data
+1.加载一个php文件，该php文件不含传递参数
+$("#myID").load("test.php");
+//在id为#myID的元素里导入test.php运行后的结果
+2. 加载一个php文件，该php文件含有一个传递参数
+$("#myID").load("test.php",{"name" : "Adam"});
+//导入的php文件含有一个传递参数，类似于：test.php?name=Adam
+3. 加载一个php文件，该php文件含有多个传递参数。注：参数间用逗号分隔
+$("#myID").load("test.php",{"name" : "Adam" ，"site":"61dh.com"});
+//导入的php文件含有一个传递参数，类似于：test.php?name=Adam&site=61dh.com
+4. 加载一个php文件，该php文件以数组作为传递参数
+$("#myID").load("test.php",{'myinfo[]', ["Adam", "61dh.com"]});
+//导入的php文件含有一个数组传递参数。
+注意：使用load，这些参数是以POST的方式传递的，因此在test.php里，不能用GET来获取参数。
+二：如何使用callback
+比如我们要在load方法得到服务器响应后，慢慢地显示加载的内容，就可以使用callback函数。代码如下：
+. 代码如下:
+
+$("#go").click(function(){
+$("#myID").load("welcome.php", {"lname" : "Cai", "fname" : "Adam", function(){
+$("#myID").fadeIn('slow');}
+);
+});
+
+防止jquery使用缓存的方法：
+缓存这东西，在一定程度上加快了页面的装载，但是也常常给我们带来麻烦。我在上篇文章里简单介绍了jQuery中Load方法的使用。在实际运用中，我们可能会碰到浏览器缓存的问题。比如我就在IE7里碰到这个问题。
+jQuery Load样本代码：
+. 代码如下:
+
+$(document).ready(function(){
+$("#labels").load("/blog/categories/labels.html");
+//在页面装载时，在ID为#labels的DOM元素里插入labels.html的内容。
+});
+
+当我更新了labels.html以后，在IE7里load方法仍旧在使用旧的labels.html，就算我按刷新键也不管用。好在jQuery提供一个防止ajax使用缓存的方法，把下面的语句加在head的javascript文件里，就可以解决问题。
+. 代码如下:
+
+$.ajaxSetup ({
+cache: false //关闭AJAX相应的缓存
+});
+
+此外我再介绍几种方法解决缓存的方法。注意：我没有在jQuery load的问题上测试过，这些方法仅供参考！
+1.更改文件名，比如把labels.html改成lables_new.html，但是这是没有办法的办法，一般没有人这么做。
+2.在labels.html后加上特定时间，比如lables.html?20081116。在实际工作中，在我更新css/javascript文件后，我都是用这种办法来防止文件被缓存。
+3.在labels.html文件的顶部加入以下声明：
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="-1">
+4.load函数不仅可以调用HTML，也可以调用script，比如labels.php，可以在php文件里使用header函数：
+. 代码如下:
+
+<?php
+header("Cache-Control: no-cache, must-revalidate");
+?>
+
+load的特殊用法：
+在load的url里加上空格后面就可以跟选择器了。
+举例：我需要load test.html的内容，并只要取id为a的内容。
+$("body").load("test.html #a");
+
+ 
+
+PS:我最近比较烦，比较烦，比较烦，毕业工作了半年，兜里只剩两毛半，还好过年回家机票已订好，可是明年我该怎麽办

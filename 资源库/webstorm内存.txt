@@ -1,0 +1,3 @@
+...bin/WebStorm.exe.vmoptions文件中设置最大内存，设置大些速度就是变快
+
+

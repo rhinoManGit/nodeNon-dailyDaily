@@ -1,0 +1,27 @@
+https://www.modern.ie/en-us/virtualization-tools#downloads
+
+blur与change；submit与click;他们的触发先后顺序都是不定的
+
+input 有maxlength 但textarea不能设置字符数
+input与textarea的value修改用input.value = '。。。。。。'这种写法，
+因为用setAttribute（value, '..........'）这样可能只会修改textarea
+的第一个子节点或许不会反映在dom上。尤其是textarea.setAttribute('value', '1233')
+根本没有效果
+
+在cmd中走到tomcat的bin文件夹下面，然后再敲入startup.bat也可以启动tomcat（相对于双击了startup.bat）
+
+//
+原来一个标签可以拥有下面两个属性同时存在哈哈
+第一个：先设置背景图
+background: url(http://img3.tuniucdn.com/img/20150105/package/spirit.png) -65px -54px no-repeat;
+第二个：在设置背景颜色
+background-color: #ffeaea;
+
+
+url: 的一个细节
+
+这样写的话在后端能够拿到hotel的值2335870
+http://hotel.tuniutest2.com/yii.php?r=hotel/hotelOrder/order&hotel=2335870&room=197584941&checkindate=2015-08-27&checkoutdate=2015-08-31
+
+但是如果这样写的话，就会拿不到
+http://hotel.tuniutest2.com/yii.php?r=hotel/hotelOrder/order/hotel=2335870&room=197584941&checkindate=2015-08-27&checkoutdate=2015-08-31

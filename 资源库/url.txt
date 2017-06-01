@@ -1,0 +1,39 @@
+iframe
+http://www.uedsc.com/index.php/get-iframe-element.html
+
+backbone
+http://www.css88.com/doc/backbone/#Model-constructor
+
+
+define(function(require, exports, module) {
+
+    var picModel = require('../models/pic'),//这样就可以实现一个js文件作为一个mode然后加到collection里面去
+
+     picsCollection = Backbone.Collection.extend({
+         model: picModel,
+         initialize: function() {
+             for (var i = 1; i < 6; i++) {
+                 this.add(new picModel({ info_data: 'I am Pic' + i, url: '/backbone/img/pic' + i + ".jpg" }));
+             }
+         }
+
+     });
+
+    return picsCollection;
+});
+
+caisongshan/micapp2014
+
+葛亮微博
+http://chaoskeh.com/ 
+
+// velocity简单入手
+http://zhidao.baidu.com/link?url=ryEUG7zvXzPgZXE-WRzsn0W-u-QSxlzU1dLyiFTJg10b2GOkZDDa3Sg3-V2M38lcPHxUzXfPYzglkxctQonoFP0iLLbRJOgCguDj4nj_Vdi
+
+// css样式
+http://v2.bootcss.com/base-css.html?#buttons
+
+http://glyphicons.com/#
+
+// seajs
+http://blog.csdn.net/lfsf802/article/details/33366915

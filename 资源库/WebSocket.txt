@@ -1,0 +1,21 @@
+基于 AJAX 的长轮询（long-polling）方式，服务器Hold一段时间后再返回信息；
+HTTP Streaming，通过iframe和<script>标签完成数据的传输；
+长连接（callback）
+
+// WebSocket
+http://blog.csdn.net/yl02520/article/details/7296223
+
+http://www.cnblogs.com/yjf512/archive/2013/03/11/2953483.html
+
+
+Status Code:200 OK(一般的http请求)
+Status Code:101 OK(WebSocket的http请求)
+
+// chrome
+http://chrome.liuyixi.com/tabs.html#method-create
+
+// http
+http://www.cnblogs.com/li0803/archive/2008/11/03/1324746.html
+
+// cometd
+http://bbs.chinaunix.net/forum.php?mod=viewthread&tid=3613920

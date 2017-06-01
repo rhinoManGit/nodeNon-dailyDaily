@@ -1,0 +1,3 @@
+格式化代码：ctrl+alt+L
+复制行：ctrl+d
+截屏：ctrl+shirt+d(暂时)

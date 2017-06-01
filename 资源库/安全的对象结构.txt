@@ -1,0 +1,117 @@
+author:rhino
+我想要写一个对象，满足一下条件：
+1.有些方法是抛出来的，就是可以用“.”可以访问；
+2.但是有些属性，就是些私有的属性，必须方法内部共享，有限的方法
+可以访问，外部不看见，只能通过方法获取到；
+3.方法和属性都必须实现面向对象
+
+实例一：
+function Fire(){
+    var that = this;
+    // 私有属性
+    var _list = [];
+
+    var self = arguments.callee,
+        prop = self.prototype;
+
+    prop.on = function(arg){
+        _list.push(arg);
+    };
+
+    prop.trigger = function(){
+        console.log(_list);
+    };
+}
+
+var fire1 = new Fire();
+var fire2 = new Fire();
+
+这种写法虽然on,和trigger这两个方法实现了，面向对象，但是由于_list是由原型对象
+内部进行访问的，我们知道原型对象是一个公共对象，所有的实例化的对象都可以访问到
+，也就是说这个原型对象是一直存在的一个公共部分。所以在这种情况下，fire1.on(1);
+fire1.on(12);这两个值之后，fire1.trigger（）与fire2.trigger（）输出的值都是一样的
+[1,12];
+
+最后进行了优化：
+
+function Fire(){
+    var that = this;
+    // 私有属性
+    var _list = [];
+
+    var self = arguments.callee,
+        prop = self.prototype;
+
+    this.set= function(arg){
+        _list.push(arg);
+    };
+
+    this.get = function(){
+        console.log(_list);
+    };
+
+    prop.on = function(arg){
+        //_list.push(arg);
+        this.set(arg);
+    };
+
+    prop.trigger = function(){
+        //console.log(_list);
+        this.get();
+    };
+}
+
+var fire1 = new Fire();
+var fire2 = new Fire();
+
+进一步简写
+function Fire(){
+    var that = this;
+    // 私有属性
+    var _list = [];
+
+    var self = arguments.callee;
+
+    this.set= function(arg){
+        _list.push(arg);
+    };
+
+    this.get = function(){
+        console.log(_list);
+    };
+}
+Fire.prototype.on = function(arg){
+    //_list.push(arg);
+    this.set(arg);
+};
+
+Fire.prototype.trigger = function(){
+    //console.log(_list);
+    this.get();
+};
+
+var fire1 = new Fire();
+var fire2 = new Fire();
+
+这样就实现了，_list即是安全的，私有的，又是面向对象的。
+fire1，与fire2各自拥有一个自己的私有变量_list;
+
+同时：对于上述私有变量为什么没有被回收的进一步解释：
+因为上面的set个get方法都是利用闭包的原理访问了外部
+函数中的变量_list而，一个对象在实例化的时候会调用
+一次构造函数，也就是说会生成一个实例对象，开辟一块
+独立的空间，由于对象中的方法一直对一个外部的变量
+进行着引用，所以该变量不会被回收。同时，由于每次构造一个
+对象就是执行一次构造函数，从而生成一个该变量，这样就保证了
+该变量是某一个对象自身存在而存在的。不会共享和污染。
+
+
+对原型对象的理解更深一层：
+就是一个方法一旦被申明之后他就存在了，而且是一直存在，直到这个方法
+被删除了，同时，他是与该方法独立的一个对象，方法每次实例化的出来的
+对象都对他有一个引用，这也就是为什么原型是面向对象了原因了。同时，
+原型对象就相当于一个全局变量，他一直存在，所以会导致他所访问的变量
+不会立即销毁，一直存在引用，（假如原型对象的一个方法里面访问了一个
+外部的变量，就相对于所有的对象，都会同时共享的去操作这个变量了，对于
+这种的解决办法就是用对象自己的方法去操作该变量，而由原型对象的方法操作
+对象的方法，从何间接地操作变量。从而实现面向对象切私有化。）

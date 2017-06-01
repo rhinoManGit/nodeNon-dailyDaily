@@ -1,0 +1,4 @@
+keydown:仅仅是指按下的是哪个键而已，所以按下a与A他输出的code都是65，（注意他都会按大写输出A）
+而keypress是用来确切得判断是大写还是小写，从而根据输出不同的ASCII的值。所以一般判断键盘输入的
+是那些字符应该用keypress而不应该用keydown。
+注：keydown与keypress不是简单的按下与松开这种关系。

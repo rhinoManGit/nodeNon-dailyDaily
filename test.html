@@ -2,14 +2,31 @@
 <HEAD>
     <TITLE>Anonymous text interrupted by a block</TITLE>
     <style type="text/css">
-        p    { display: inline }
+        body{
+            margin: 5px;
+            background: #dcdcdc;
+        }
+        p    { display: inline;margin: 5px;background: #000000 }
         span { display: block }
+        div{
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            background: #0000ff;
+            margin: 5px;
+        }
     </style>
 </HEAD>
 <BODY>
 <P>
     This is anonymous text before the SPAN.
     <SPAN>This is the content of SPAN.</SPAN>
+    <SPAN>This is the content of SPAN.</SPAN>
+    <SPAN>This is the content of SPAN.</SPAN>
+    <SPAN>This is the content of SPAN.</SPAN>
     This is anonymous text after the SPAN.
 </P>
+<div>1223</div>
+<div>1223</div>
+<div>1223</div>
 </BODY>

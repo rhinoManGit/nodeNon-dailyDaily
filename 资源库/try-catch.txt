@@ -1,0 +1,16 @@
+
+普通写一句话：
+
+（前提是：ss.focus未定义）
+ alert(ss.focus); // 执行后会在浏览器的console中报： Uncaught ReferenceError: ss is not defined
+
+用try{
+	alert(ss.focus);
+	}catch(ex){
+
+	alert(‘完了报错了！！’+ex);
+} 
+
+这样的话我们在浏览器的console中看不到报错，但是弹出了(完了报错了！！Uncaught ReferenceError: ss is not defined);
+
+try-catch的用法懂了吧！（很好用，可以在ie中防止报错脚本（直接扑捉之后处理，不会报错了）不能运行的情况了哈哈）

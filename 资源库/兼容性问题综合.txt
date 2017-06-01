@@ -1,0 +1,74 @@
+1.时间校验(ie,firefox PK chrome)
+目的：将一组数字类型的字符串检验是不是有效的时间如：’20156-12-20‘
+开始我使用的是 new Date('2015/3/12'); 如果返回值为"Thu Mar 12 2015 00:00:00 GMT+0800 (中国标准时间)（此处用standard代替）"
+类型则算是有效时间。
+但是发现了一个兼容问题： 在chrome下new Date('2015/3/12');中月份只要大于12就不会返回standard,也符合我们的习惯；但是，在ie
+和firefox下面这种时间是有效的，因为他们把月份如果是大于12的就会依次向后面的年份推如：new Date('2015/34/12')则返回‘Date 
+{Thu Oct 12 2017 00:00:00 GMT+0800}’;result = standard.Format('yyyy-MM-dd');就可以将standard时间转为特定格式
+注：format方法没有兼容问题ie7及以上都支持（但是记住MM（月份）一定要大写）
+
+注：在chrome和Firefox下new一个时间这样就可以new Date('2015-05-12')和new Date('2015/05/12'),
+但是在ie下面只能用new Date('2015/05/12')这一种方式
+
+
+2. (ie7 PK 其他)
+	在布局中，<li>与<li>标签如果存在标签元素如（p, span）时，在其他浏览器及ie7以上版本时，这个中间的元素是可以显示的
+但是在ie7下面这<li>与<li>之间的元素是显示不出来的。所以注意布局。避免这种问题。
+
+3. (ie7 PK 其他)
+场景说明：在其他浏览器中都是正常的，但是在ie7下面弹框被蒙层遮住了。
+
+弹出框的div样式属性是：style="z-index: 2005; display: block; left: 771.5px; top: 477.5px; width: 360px;position: fixed;"
+
+
+而蒙层的样式属性是：style="width: 100%; height: 1670px; position: absolute; display: block;background-color: #000;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  filter: alpha(opacity=30);
+  top: 0;
+  left: 0;
+  z-index: 1005;"
+
+原因是：
+	弹窗已经在在父元素wrapper(父元素)里面了   wrapper跟蒙层同一级别  但是z-index没蒙层大  它里面的元素设置多大的z-index
+在IE7下也是没用的。最简单的解决方法是把蒙层与弹框放在同一级别上。让他们的父节点的一样。就好了，哈哈！
+就是：弹出层的父元素与蒙层是兄弟节点，但是蒙层的z-index比父元素高很多，所以解决办法就是要不给弹出层的父节点加z-index,弥补落
+差要不就，把两个放在同一个父节点下面
+
+ie7以上及其他浏览器的层级都是忽略节点的代数，直接比较z-index的，但是ie7中必须先看两个节点是不是同一级的，他们的z-index计算会
+加上父节点产生的代勾。哈哈
+
+4.ie7下面text-align:center不能居中
+解决：用ie7打开是居左的。 
+
+万能 float 闭合(非常重要!) 
+关于 clear float 的原理可参见 [How To Clear Floats Without Structural Markup] 
+将以下代码加入Global CSS 中,给需要闭合的div加上 class=”clearfix” 即可,屡试不爽. 
+
+复制代码代码如下:
+
+.clearfix:after 
+{ 
+content:"."; 
+display:block; 
+height:0; 
+clear:both; 
+visibility:hidden; 
+} 
+.clearfix 
+{ 
+display:inline-block; 
+}.clearfix {display:block;} 
+
+问题：height: 100%; ie下有问题（ie会算最小高度）
+解决：给父容器设定高度就好了
+
+问题：ie下面 margin: 0 auto 不居中
+解决：加上文档声明：<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+ie中背景图片的问题：
+
+  background-size:100% 100%;/* ie9+*/
+  zoom:0.75;/* 解决ie的背景图片过小的情况*/

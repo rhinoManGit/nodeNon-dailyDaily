@@ -1,0 +1,29 @@
+ var opt = {
+        method: "POST",
+        json: true,
+        host: 'tccomponent.17usoft.com',
+        port: 80,
+        path: "/tcconfigcenter6/v6/modifyandpushconfig",
+        //auth: "gny.cn.pcbook:gny.cn.pcbook",
+        headers: {
+            "Authorization": auth,
+            //"Authorization": 'Basic Z255LmNuLnBjYm9vazpnbnkuY24ucGNib29r',
+            "Content-Type": "application/json;charset=UTF-8"
+            //"Content-Length": content.length// *******要上传的是json，所以不用设置这个
+            // 这个是标准post按字符串传数据的时候用的。********同时，应该注意下面几点
+
+        }
+    };
+
+    gutil.log(gutil.colors.green(sValue))
+
+    var req = http.request(opt, function (res) {
+
+    //********* 传的是json，所以直接传json字符串即可。
+    req.write(JSON.stringify(data));
+
+
+    **************************
+    说明了一个道理，一般我们用的post请求发送的数据要不是字符串形式的，要不是key:value传过去的；
+    但是如果选择json传的话，那就是必要保证请求头告诉服务端我们传的是json字符串，同时我们的data
+    中也应该是标准的json字符串。这样才行。负责服务端解析就会出错。

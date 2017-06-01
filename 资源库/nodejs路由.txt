@@ -1,0 +1,16 @@
+客户端js不能读取文件,所以ajax不能传文件。
+看下面的例子就可以看出路由是什么了：
+
+ var express = require('express'); 
+     var app = express(); 
+     app.get('/', function(req, res){ 
+          res.send('hello world'); 
+          console.log('hello world');
+     }); 
+     app.listen('8808');
+
+app.get('/test', routes.test);
+路由就是：如上当用户访问localhost:/test/时回调routes模块中的test方法。
+就这么简单。其实就是url的跟踪。
+  
+Backbone:的Event:http://www.cnblogs.com/snandy/archive/2013/05/28/3074346.html

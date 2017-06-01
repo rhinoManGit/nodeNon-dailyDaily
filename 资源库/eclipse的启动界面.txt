@@ -1,0 +1,8 @@
+修改eclipse的启动画面
+博客分类：
+Eclipse
+Eclipse
+eclipse的启动画面使用的bmp格式的图面文件,可以使用PS进行修改,或干脆把自己的照片放上去...
+
+图面存放的位置:
+eclipse_home\plugins\org.eclipse.platform_3.3.1.M20070725\splash.bmp
