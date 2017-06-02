@@ -1,0 +1,15 @@
+在a.js中有这一段代码：
+
+var aaa = require('./../config/staticCacheVersion.json'); // *********
+var config            = require('./../config').getConfig();
+
+第一行的这个require只会在这个a.js被require的时候执行一次；所以即使在其他的文件中把staticCacheVersion.json这个
+文件更新了，且require('./../config/staticCacheVersion.json')执行以下，也是不能启动更新缓存的作用；
+因为这这个a.js中首次进来之后require('./../config/staticCacheVersion.json')这个的值被赋值给了aaa,且这个require
+不会再执行，所以aaa的值不会变的，所以缓存就是清不掉。所以引入了下面的方式：
+
+var getConfig = function(){
+    return require('./../config/staticCacheVersion.json');
+};
+
+这样每次就会重新赋值aaa,通过最新的require('./../config/staticCacheVersion.json')的值。这就是一种写入方式不同而导致的问题。
