@@ -1,12 +1,18 @@
-±ÈÈç£º
-ejsÖÖcssĞ´·¨£ºbackground: center/cover url(../app/img/login_bg.jpg) no-repeat;
+æ¯”å¦‚ï¼š
+ejsç§csså†™æ³•ï¼šbackground: center/cover url(../app/img/login_bg.jpg) no-repeat;
 1,url: http://localhost:801/index/login
-	ä¯ÀÀÆ÷ÖĞ£ºhttp://localhost:801/app/img/login_bg.jpg
+	æµè§ˆå™¨ä¸­ï¼šhttp://localhost:801/app/img/login_bg.jpg
 2,url: http://localhost:801/index/login/
-	ä¯ÀÀÆ÷ÖĞ£ºhttp://localhost:801/index/app/img/login_bg.jpg
+	æµè§ˆå™¨ä¸­ï¼šhttp://localhost:801/index/app/img/login_bg.jpg
 3,url: http://localhost:801/index/login/asdd/
-	ä¯ÀÀÆ÷ÖĞ£ºhttp://localhost:801/index/login/app/img/login_bg.jpg
+	æµè§ˆå™¨ä¸­ï¼šhttp://localhost:801/index/login/app/img/login_bg.jpg
 4,url: http://localhost:801/index/login/asdd//
-	ä¯ÀÀÆ÷ÖĞ£ºhttp://localhost:801/index/login/asdd/app/img/login_bg.jpg
+	æµè§ˆå™¨ä¸­ï¼šhttp://localhost:801/index/login/asdd/app/img/login_bg.jpg
 	
-	½áÂÛ£º1£¬Ïà¶ÔÂ·¾¶ÊÇÏà¶ÔÓÚurlµÄ£¬2£¬Ïà¶ÔÂ·¾¶Ğ´·¨ÖĞµÄ¡°.¡±£¨µã£©´ú±íÕâurlÂ·¾¶ÖĞµÄĞ±¸Ü£¬ÇÒÖ»ÓëĞ±¸ÜÓĞ¹Ø£¬Ò»¸öµã´úÂëµ±Ç°urlÖĞÏò×ó±ßÍËÒ»¸ö Ğ±¸Ü¡£
+	ç»“è®ºï¼š1ï¼Œç›¸å¯¹è·¯å¾„æ˜¯ç›¸å¯¹äºurlçš„ï¼Œ2ï¼Œç›¸å¯¹è·¯å¾„å†™æ³•ä¸­çš„â€œ.â€ï¼ˆç‚¹ï¼‰ä»£è¡¨è¿™urlè·¯å¾„ä¸­çš„æ–œæ ï¼Œä¸”åªä¸æ–œæ æœ‰å…³ï¼Œä¸€ä¸ªç‚¹ä»£ç å½“å‰urlä¸­å‘å·¦è¾¹é€€ä¸€ä¸ª æ–œæ ã€‚
+	
+æ”¹è¿›æ–¹æ¡ˆï¼šbackground: center/cover url(/../app/img/login_bg.jpg) no-repeat;
+è¿™æ ·å†™çš„è¯ï¼Œå°±ä¸åŸŸåæ²¡å…³ç³»äº†ï¼Œåªä¸å½“å‰ç›®å½•å‘ä¸Šé€€ä¸€ä¸ªç›®å½•çš„æ–‡ä»¶ï¼Œè¿™æ ·å°±å¯ä»¥æ‘†è„±åŸŸåçš„å…³ç³»ã€‚æ‰€ä»¥åœ¨è·¯å¾„è§£æä¸­çš„ç‰¹ç‚¹å°±æ˜¯ï¼Œ
+	/../ï¼š è¡¨ç¤ºå›é€€ä¸€çº§ç›®å½•ï¼›
+	./: å½“å‰åŸŸåï¼Œç›´æ¥è¿½åŠ 
+	../ï¼šå½“å‰åŸŸåå›é€€ä¸¤ä¸ª/ï¼Œè¿½åŠ 
