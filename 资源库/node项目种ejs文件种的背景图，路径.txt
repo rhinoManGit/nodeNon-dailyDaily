@@ -1,0 +1,12 @@
+比如：
+ejs种css写法：background: center/cover url(../app/img/login_bg.jpg) no-repeat;
+1,url: http://localhost:801/index/login
+	浏览器中：http://localhost:801/app/img/login_bg.jpg
+2,url: http://localhost:801/index/login/
+	浏览器中：http://localhost:801/index/app/img/login_bg.jpg
+3,url: http://localhost:801/index/login/asdd/
+	浏览器中：http://localhost:801/index/login/app/img/login_bg.jpg
+4,url: http://localhost:801/index/login/asdd//
+	浏览器中：http://localhost:801/index/login/asdd/app/img/login_bg.jpg
+	
+	结论：1，相对路径是相对于url的，2，相对路径写法中的“.”（点）代表这url路径中的斜杠，且只与斜杠有关，一个点代码当前url中向左边退一个 斜杠。
