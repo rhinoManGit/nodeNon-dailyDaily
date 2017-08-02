@@ -1,10 +1,10 @@
- var opt = {
+﻿ var opt = {
         method: "POST",
         json: true,
-        host: 'tccomponent.17usoft.com',
+        host: '',
         port: 80,
-        path: "/tcconfigcenter6/v6/modifyandpushconfig",
-        //auth: "gny.cn.pcbook:gny.cn.pcbook",
+        path: "",
+        //auth: "",
         headers: {
             "Authorization": auth,
             //"Authorization": 'Basic Z255LmNuLnBjYm9vazpnbnkuY24ucGNib29r',
