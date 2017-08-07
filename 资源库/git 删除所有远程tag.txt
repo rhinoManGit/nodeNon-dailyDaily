@@ -1,9 +1,9 @@
-����ָ�����ʹԶ�̵�tag��ɾ�����ùܵ�һ���ӣ����´󼪡�
+如上指令，会致使远程的tag被删除。用管道一连接，万事大吉。
 
 git show-ref --tag | awk '/(.*)(\s+)(.*)$/ {print ":" $2}' | xargs git push origin
 
-�����ָ�����ƴ��������ָ���ˣ��������ָ���ɾ��Զ�����е�tag�����ã����ϣ��ɾ�����������ģ�Ӧ���޸�awkָ����������ʽ��
+上面的指令就是拼接完整的指令了，不过这个指令，会删除远端所有的tag，慎用，如果希望删除符合条件的，应该修改awk指令的正则表达式。
 
-ɾ������Զ�˵�tag�����ص�tag��ɾ��������̫һ��������ԭ����ͬ��
+删除完了远端的tag，本地的tag，删法还不是太一样，不过原理相同。
 
 git tag | grep "v1.1.0.\d$" | xargs git tag -d
