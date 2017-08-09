@@ -1,0 +1,11 @@
+﻿a="1111sssssss2222"
+a.match(/^(\w{4})(\w+)?(\w{4})$/)
+ ["1111sssssss2222", "1111", "sssssss", "2222", index: 0, input: "1111sssssss2222"]
+ 
+ 改成：a.match(/^(\w{4})(\w+)?(\1)$/)
+ null
+a="1111sssssss1111"
+a.match(/^(\w{4})(\w+)?(\1)$/)
+["1111sssssss1111", "1111", "sssssss", "1111", index: 0, input: "1111sssssss1111"]
+
+说明\1 是前面第一个分组中的值相同（值，而不是正则表达式）
